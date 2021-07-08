@@ -341,11 +341,12 @@ main() {
             systemctl start balena || finish_up "Couldn't start up balena."
             systemctl start resin-supervisor || finish_up "Couldn't start up supervisor."
         else
-            echo "First supervisoe restart attempt didn't work, but not retrying."
+            echo "First supervisor restart attempt didn't work, but not retrying."
         fi
     fi
     sleep 10
-    if ! balena ps | grep -q resin_supervisor ; then
+    ps=$(balena ps)
+    if ! echo "$ps" | grep -q "_supervisor" ; then
         finish_up "Supervisor not restarted properly after while."
     fi
     # All done
